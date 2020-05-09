@@ -98,7 +98,7 @@ class UsersList extends Component {
     },
     {
       title: '注册时间',
-      dataIndex: 'createTime',
+      dataIndex: 'createdate',
       sorter: false,
       render: val => <span>{moment(val).format('YYYY-MM-DD')}</span>,
     },
