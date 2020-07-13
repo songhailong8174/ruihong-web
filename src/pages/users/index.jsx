@@ -15,15 +15,15 @@ import {
   Select,
   message,
   Popconfirm
-} from 'antd';
-import React, { Component, Fragment } from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { connect } from 'dva';
-import moment from 'moment';
-import CreateForm from './components/CreateForm';
-import StandardTable from './components/StandardTable';
-import UpdateForm from './components/UpdateForm';
-import styles from './style.less';
+} from "antd";
+import React, { Component, Fragment } from "react";
+import { PageHeaderWrapper } from "@ant-design/pro-layout";
+import { connect } from "dva";
+import moment from "moment";
+import CreateForm from "./components/CreateForm";
+import StandardTable from "./components/StandardTable";
+import UpdateForm from "./components/UpdateForm";
+import styles from "./style.less";
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -32,15 +32,15 @@ const { Option } = Select;
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
-    .join(',');
+    .join(",");
 
-const statusMap = ['default', 'success', 'error'];
-const status = ['关闭', '运行中', '已上线', '异常'];
+const statusMap = ["default", "success", "error"];
+const status = ["关闭", "运行中", "已上线", "异常"];
 
 /* eslint react/no-multi-comp:0 */
 @connect(({ Users, loading }) => ({
   Users,
-  loading: loading.models.rule,
+  loading: loading.models.rule
 }))
 class UsersList extends Component {
   state = {
@@ -49,75 +49,81 @@ class UsersList extends Component {
     expandForm: false,
     selectedRows: [],
     formValues: {},
-    stepFormValues: {},
+    stepFormValues: {}
   };
 
   columns = [
     {
-      title: '用户名',
-      dataIndex: 'username'
+      title: "用户名",
+      dataIndex: "username"
     },
     {
-      title: '手机号',
-      dataIndex: 'mobile'
+      title: "手机号",
+      dataIndex: "mobile"
     },
     {
-      title: '姓名',
-      dataIndex: 'realname'
+      title: "姓名",
+      dataIndex: "realname"
     },
     {
-      title: '邮箱',
-      dataIndex: 'email'
+      title: "邮箱",
+      dataIndex: "email"
+    },
+    // {
+    //   title: '咨询服务',
+    //   dataIndex: 'smsprice'
+    // },
+    // {
+    //   title: '公司',
+    //   dataIndex: 'company'
+    // },
+    // {
+    //   title: '税号',
+    //   dataIndex: 'taxno'
+    // },
+    {
+      title: "账户名称",
+      dataIndex: "accountnum"
     },
     {
-      title: '价格',
-      dataIndex: 'smsprice'
+      title: "状态",
+      dataIndex: "status",
+      render: val => <span>{val == 10 ? "正常" : "已冻结"}</span>
     },
     {
-      title: '公司',
-      dataIndex: 'company'
-    },
-    {
-      title: '税号',
-      dataIndex: 'taxno'
-    },
-    {
-      title: '账户名称',
-      dataIndex: 'accountnum'
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      render: val => <span>{ val == 10 ? '正常' : '已冻结'}</span>
-    },
-    {
-      title: '认证状态',
-      dataIndex: 'authstatus',
+      title: "认证状态",
+      dataIndex: "authstatus",
       sorter: false,
-      render: val => <span>{ val == 1 ? '已认证' : '未认证'}</span>
+      render: val => <span>{val == 1 ? "已认证" : "未认证"}</span>
     },
     {
-      title: '注册时间',
-      dataIndex: 'createdate',
+      title: "注册时间",
+      dataIndex: "createdate",
       sorter: false,
-      render: val => <span>{moment(val).format('YYYY-MM-DD')}</span>,
+      render: val => <span>{moment(val).format("YYYY-MM-DD")}</span>
     },
     {
-      title: '操作',
+      title: "操作",
       render: (text, record) => (
         <Fragment>
-          <a href="#" onClick={ () => this.handleUpdateModalVisible(true, record) }>{ record.authStatus == 0 ? '查看' : '审核'}</a>&nbsp;
+          <a
+            href="#"
+            onClick={() => this.handleUpdateModalVisible(true, record)}
+          >
+            {record.authStatus == 0 ? "查看" : "审核"}
+          </a>
+          &nbsp;
           {/* <a href="#" onClick={ () => this.handlePublish(record) }>{ record.status == 10 ? '冻结' : '解冻'}</a>&nbsp; */}
         </Fragment>
-      ),
+      )
     }
   ];
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'Users/fetch',
-      payload: {currentPage: 1, pageSize: 10}
+      type: "Users/fetch",
+      payload: { currentPage: 1, pageSize: 10 }
     });
   }
 
@@ -133,7 +139,7 @@ class UsersList extends Component {
       currentPage: pagination.current,
       pageSize: pagination.pageSize,
       ...formValues,
-      ...filters,
+      ...filters
     };
 
     if (sorter.field) {
@@ -141,8 +147,8 @@ class UsersList extends Component {
     }
 
     dispatch({
-      type: 'Users/fetch',
-      payload: params,
+      type: "Users/fetch",
+      payload: params
     });
   };
 
@@ -150,27 +156,27 @@ class UsersList extends Component {
     const { form, dispatch } = this.props;
     form.resetFields();
     this.setState({
-      formValues: {},
+      formValues: {}
     });
     dispatch({
-      type: 'Users/fetch',
-      payload: {},
+      type: "Users/fetch",
+      payload: {}
     });
   };
 
-  handleEdit = (record) => {
+  handleEdit = record => {
     const { form, dispatch } = this.props;
   };
-  handleRemove = (record) => {
+  handleRemove = record => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'Users/delete',
-      payload: {id: record.id},
+      type: "Users/delete",
+      payload: { id: record.id }
     }).then(resp => {
-      if(resp.code == 200){
-        message.success('删除成功');
+      if (resp.code == 200) {
+        message.success("删除成功");
         dispatch({
-          type: 'News/fetch',
+          type: "News/fetch",
           payload: {}
         });
       } else {
@@ -178,20 +184,20 @@ class UsersList extends Component {
       }
     });
   };
-  handlePublish = (record) => {
+  handlePublish = record => {
     const { dispatch } = this.props;
     if (record.status != 0) {
       this.unPublish(record);
-      return
+      return;
     }
     dispatch({
-      type: 'Users/publish',
-      payload: {id: record.id},
+      type: "Users/publish",
+      payload: { id: record.id }
     }).then(resp => {
-      if(resp.code == 200){
-        message.success('发布成功');
+      if (resp.code == 200) {
+        message.success("发布成功");
         dispatch({
-          type: 'Users/fetch',
+          type: "Users/fetch",
           payload: {}
         });
       } else {
@@ -200,16 +206,16 @@ class UsersList extends Component {
     });
   };
 
-  unPublish = (record) => {
+  unPublish = record => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'Users/unPublish',
-      payload: {id: record.id},
+      type: "Users/unPublish",
+      payload: { id: record.id }
     }).then(resp => {
-      if(resp.code == 200){
-        message.success('取消成功');
+      if (resp.code == 200) {
+        message.success("取消成功");
         dispatch({
-          type: 'Users/fetch',
+          type: "Users/fetch",
           payload: {}
         });
       } else {
@@ -221,7 +227,7 @@ class UsersList extends Component {
   toggleForm = () => {
     const { expandForm } = this.state;
     this.setState({
-      expandForm: !expandForm,
+      expandForm: !expandForm
     });
   };
 
@@ -231,17 +237,17 @@ class UsersList extends Component {
     if (!selectedRows) return;
 
     switch (e.key) {
-      case 'remove':
+      case "remove":
         dispatch({
-          type: 'Users/remove',
+          type: "Users/remove",
           payload: {
-            key: selectedRows.map(row => row.key),
+            key: selectedRows.map(row => row.key)
           },
           callback: () => {
             this.setState({
-              selectedRows: [],
+              selectedRows: []
             });
-          },
+          }
         });
         break;
 
@@ -252,7 +258,7 @@ class UsersList extends Component {
 
   handleSelectRows = rows => {
     this.setState({
-      selectedRows: rows,
+      selectedRows: rows
     });
   };
 
@@ -266,62 +272,76 @@ class UsersList extends Component {
       //   values.endDay = fieldsValue.times[1].format('YYYY-MM-DD');
       // }
       this.setState({
-        formValues: fieldsValue,
+        formValues: fieldsValue
       });
       dispatch({
-        type: 'Users/fetch',
-        payload: {...fieldsValue, pageSize: 10, currentPage: 1},
+        type: "Users/fetch",
+        payload: { ...fieldsValue, pageSize: 10, currentPage: 1 }
       });
     });
   };
 
   handleModalVisible = flag => {
     this.setState({
-      modalVisible: !!flag,
+      modalVisible: !!flag
     });
   };
 
   handleUpdateModalVisible = (flag, record) => {
+    if (record != undefined) {
+      let smsprice = record.smsprice;
+      let str = "";
+      if (smsprice == 1) {
+        str = "短信服务";
+      } else if (smsprice == 2) {
+        str = "语音服务";
+      } else if (smsprice == 3) {
+        str = "视频短信";
+      } else if (smsprice == 4) {
+        str = "一键认证";
+      }
+      record.smsprice = str;
+    }
     this.setState({
       updateModalVisible: !!flag,
-      stepFormValues: record || {},
+      stepFormValues: record || {}
     });
   };
 
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'News/add',
-      payload: fields,
+      type: "News/add",
+      payload: fields
     }).then(resp => {
-      if(resp.code == 200){
-        message.success('添加成功');
+      if (resp.code == 200) {
+        message.success("添加成功");
         dispatch({
-          type: 'News/fetch'
+          type: "News/fetch"
         });
       } else {
         message.error(resp.msg);
       }
-    })
+    });
     this.handleModalVisible();
   };
 
   handleUpdate = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'Users/appove',
-      payload: fields,
+      type: "Users/appove",
+      payload: fields
     }).then(resp => {
-      if(resp.code == 200){
-        message.success('操作成功');
+      if (resp.code == 200) {
+        message.success("操作成功");
         dispatch({
-          type: 'Users/fetch',
-          payload: {currentPage: 1, pageSize: 10}
+          type: "Users/fetch",
+          payload: { currentPage: 1, pageSize: 10 }
         });
       } else {
         message.error(resp.msg);
       }
-    })
+    });
     this.handleUpdateModalVisible();
   };
 
@@ -334,30 +354,30 @@ class UsersList extends Component {
           gutter={{
             md: 8,
             lg: 24,
-            xl: 48,
+            xl: 48
           }}
         >
           <Col md={5} sm={8}>
             <FormItem label="用户名">
-              {getFieldDecorator('username')(< Input />)}
+              {getFieldDecorator("username")(<Input />)}
               {/* {getFieldDecorator('times')(<RangePicker allowClear={false} />)} */}
             </FormItem>
           </Col>
 
           <Col md={5} sm={8}>
             <FormItem label="手机号">
-              {getFieldDecorator('mobile')(< Input />)}
+              {getFieldDecorator("mobile")(<Input />)}
               {/* {getFieldDecorator('times')(<RangePicker allowClear={false} />)} */}
             </FormItem>
           </Col>
 
           <Col md={5} sm={8}>
             <FormItem label="公司">
-              {getFieldDecorator('company')(< Input />)}
+              {getFieldDecorator("company")(<Input />)}
               {/* {getFieldDecorator('times')(<RangePicker allowClear={false} />)} */}
             </FormItem>
           </Col>
-          
+
           <Col md={9} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
@@ -365,7 +385,7 @@ class UsersList extends Component {
               </Button>
               <Button
                 style={{
-                  marginLeft: 8,
+                  marginLeft: 8
                 }}
                 onClick={this.handleFormReset}
               >
@@ -373,7 +393,7 @@ class UsersList extends Component {
               </Button>
               <a
                 style={{
-                  marginLeft: 8,
+                  marginLeft: 8
                 }}
                 onClick={this.toggleForm}
               >
@@ -388,7 +408,7 @@ class UsersList extends Component {
 
   renderAdvancedForm() {
     const {
-      form: { getFieldDecorator },
+      form: { getFieldDecorator }
     } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -396,55 +416,55 @@ class UsersList extends Component {
           gutter={{
             md: 8,
             lg: 24,
-            xl: 48,
+            xl: 48
           }}
         >
           <Col md={5} sm={8}>
             <FormItem label="用户名">
-              {getFieldDecorator('username')(< Input />)}
+              {getFieldDecorator("username")(<Input />)}
               {/* {getFieldDecorator('times')(<RangePicker allowClear={false} />)} */}
             </FormItem>
           </Col>
 
           <Col md={5} sm={8}>
             <FormItem label="手机号">
-              {getFieldDecorator('mobile')(< Input />)}
+              {getFieldDecorator("mobile")(<Input />)}
               {/* {getFieldDecorator('times')(<RangePicker allowClear={false} />)} */}
             </FormItem>
           </Col>
 
           <Col md={5} sm={8}>
             <FormItem label="公司">
-              {getFieldDecorator('company')(< Input />)}
+              {getFieldDecorator("company")(<Input />)}
               {/* {getFieldDecorator('times')(<RangePicker allowClear={false} />)} */}
             </FormItem>
           </Col>
           <Col md={5} sm={8}>
             <FormItem label="使用状态">
-              {getFieldDecorator('authstatus')(
+              {getFieldDecorator("authstatus")(
                 <Select
                   placeholder="请选择"
                   style={{
-                    width: '100%',
+                    width: "100%"
                   }}
                 >
                   <Option value="0">未认证</Option>
                   <Option value="1">已认证</Option>
-                </Select>,
+                </Select>
               )}
             </FormItem>
           </Col>
         </Row>
-        
+
         <div
           style={{
-            overflow: 'hidden',
+            overflow: "hidden"
           }}
         >
           <div
             style={{
-              float: 'right',
-              marginBottom: 24,
+              float: "right",
+              marginBottom: 24
             }}
           >
             <Button type="primary" htmlType="submit">
@@ -452,7 +472,7 @@ class UsersList extends Component {
             </Button>
             <Button
               style={{
-                marginLeft: 8,
+                marginLeft: 8
               }}
               onClick={this.handleFormReset}
             >
@@ -460,7 +480,7 @@ class UsersList extends Component {
             </Button>
             <a
               style={{
-                marginLeft: 8,
+                marginLeft: 8
               }}
               onClick={this.toggleForm}
             >
@@ -480,9 +500,14 @@ class UsersList extends Component {
   render() {
     const {
       Users: { data },
-      loading,
+      loading
     } = this.props;
-    const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
+    const {
+      selectedRows,
+      modalVisible,
+      updateModalVisible,
+      stepFormValues
+    } = this.state;
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="remove">删除</Menu.Item>
@@ -491,11 +516,11 @@ class UsersList extends Component {
     );
     const parentMethods = {
       handleAdd: this.handleAdd,
-      handleModalVisible: this.handleModalVisible,
+      handleModalVisible: this.handleModalVisible
     };
     const updateMethods = {
       handleUpdateModalVisible: this.handleUpdateModalVisible,
-      handleUpdate: this.handleUpdate,
+      handleUpdate: this.handleUpdate
     };
     return (
       <PageHeaderWrapper>

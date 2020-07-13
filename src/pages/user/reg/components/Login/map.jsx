@@ -3,6 +3,7 @@ import React from "react";
 import styles from "./index.less";
 
 const selectBefore = (
+  // <img src={ this.state.imgUrl }></img>
   <Select defaultValue="+86" style={{ width: 90 }}>
     <Option value="+86">+86</Option>
   </Select>
@@ -53,6 +54,33 @@ export default {
       {
         pattern: /^1\d{10}$/,
         message: "Wrong mobile number format!"
+      }
+    ]
+  },
+  ImgCode: {
+    props: {
+      size: "large",
+      placeholder: "mobile number"
+      // addonBefore: selectBefore
+    },
+    rules: [
+      {
+        required: true,
+        message: "请输入图形验证码"
+      }
+    ]
+  },
+  ServiceList: {
+    props: {
+      size: "large",
+      placeholder: "请选择需要的服务",
+      mode: "multiple"
+      // addonBefore: selectBefore
+    },
+    rules: [
+      {
+        required: true,
+        message: "请选择需要的服务"
       }
     ]
   },
